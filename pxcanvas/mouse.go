@@ -10,7 +10,7 @@ func (pxCanvas *PxCanvas) Scrolled(ev *fyne.ScrollEvent) {
 	pxCanvas.Refresh()
 }
 
-func (pxCanvas *PxCanvas) MouseMove(ev *desktop.MouseEvent) {
+func (pxCanvas *PxCanvas) MouseMoved(ev *desktop.MouseEvent) {
 	pxCanvas.TryPan(pxCanvas.mouseState.previousCoord, ev)
 	pxCanvas.Refresh()
 	pxCanvas.mouseState.previousCoord = &ev.PointEvent
