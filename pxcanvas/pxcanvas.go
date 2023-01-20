@@ -17,7 +17,7 @@ type PxCanvasMouseState struct {
 type PxCanvas struct {
 	widget.BaseWidget
 	apptype.PxCanvasConfig
-	rednerer    *PxCanvasRenderer
+	renderer    *PxCanvasRenderer
 	PixelData   image.Image
 	mouseState  PxCanvasMouseState
 	appState    *apptype.State
@@ -85,7 +85,7 @@ func (pxCanvas *PxCanvas) CreateRenderer() fyne.WidgetRenderer {
 		canvasBorder: canvasBorder,
 	}
 
-	pxCanvas.rednerer = renderer
+	pxCanvas.renderer = renderer
 	return renderer
 }
 
