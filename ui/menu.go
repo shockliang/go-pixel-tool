@@ -5,6 +5,8 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
+	"go-pixel-tool/util"
+	image2 "image"
 	"image/png"
 	"os"
 	"strconv"
@@ -109,10 +111,39 @@ func BuildNewMenu(app *AppInit) *fyne.MenuItem {
 	})
 }
 
+func BuildOpenMenu(app *AppInit) *fyne.MenuItem {
+	return fyne.NewMenuItem("Open...", func() {
+		dialog.ShowFileOpen(func(uri fyne.URIReadCloser, err error) {
+			if uri == nil {
+				return
+			} else {
+				image, _, err := image2.Decode(uri)
+				if err != nil {
+					dialog.ShowError(err, app.PixlWindow)
+					return
+				}
+
+				app.PixlCanvas.LoadImage(image)
+				app.State.SetPathFile(uri.URI().Path())
+				imgColors := util.GetImageColors(image)
+				i := 0
+				for c := range imgColors {
+					if i == len(app.Swatches) {
+						break
+					}
+					app.Swatches[i].SetColor(c)
+					i++
+				}
+			}
+		}, app.PixlWindow)
+	})
+}
+
 func BuildMenus(app *AppInit) *fyne.Menu {
 	return fyne.NewMenu(
 		"File",
 		BuildNewMenu(app),
+		BuildOpenMenu(app),
 		BuildSaveMenu(app),
 		BuildSaveAsMenu(app))
 }
